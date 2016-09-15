@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://heapbeats.ws.projects.my/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://heapbeats.ws.projects.my/">
+
+<xs:element name="getFreeMemory" type="tns:getFreeMemory" />
+
+<xs:element name="getFreeMemoryResponse" type="tns:getFreeMemoryResponse" />
+
+<xs:element name="getMaxMemory" type="tns:getMaxMemory" />
+
+<xs:element name="getMaxMemoryResponse" type="tns:getMaxMemoryResponse" />
+
+<xs:element name="getTotalMemory" type="tns:getTotalMemory" />
+
+<xs:element name="getTotalMemoryResponse" type="tns:getTotalMemoryResponse" />
+
+<xs:element name="hello" type="tns:hello" />
+
+<xs:element name="helloResponse" type="tns:helloResponse" />
+
+<xs:complexType name="getMaxMemory">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="getMaxMemoryResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getFreeMemory">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="getFreeMemoryResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTotalMemory">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="getTotalMemoryResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

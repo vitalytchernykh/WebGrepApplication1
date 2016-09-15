@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="IE=11" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+                <h:outputStylesheet name="css/styles.css" />
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" resizable="true" closable="true" collapsible="true">
+                    <h:form prependId="false" enctype="multipart/form-data" >
+
+                        <p:selectManyCheckbox value="#{fileGrepBean.checkBoxFilterStringArray}" >
+                            <f:selectItems value="#{fileGrepBean.checkBoxFilterItems}"
+                                           var="f"
+                                           itemLabel="#{f.itemLabel}"
+                                           itemValue="#{f.itemValue}" />
+                        </p:selectManyCheckbox>
+                        <p:commandButton value="#{msgs.FilterBtnPrompt}"
+                                         action="submit()"
+                                         update=":log_entires"/>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" closable="true" collapsible="true">
+                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                        <f:facet name="default">
+                            <h:outputText value="Status: StandBy" />
+                        </f:facet>
+                        <f:facet name="start">
+                            <p:graphicImage library="images" name="ajaxloadingbar.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="Status: Completed" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Left" collapsible="true">
+                    <h:form prependId="false" enctype="multipart/form-data">
+                        <p:menu style="width: auto;">
+                            <p:submenu label="#{msgs.InputDataPrompt}">
+                                <p:menuitem>
+                                    #{msgs.ChooseFilePrompt}
+                                    <p:fileUpload mode="simple"
+                                                  multiple="true"
+                                                  dragDropSupport="false"
+                                                  update=":messages"
+                                                  sizeLimit="100000"
+                                                  fileLimit="3"
+                                                  required="true"
+                                                  class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-fileupload-choose">
+                                        <f:validateRequired />
+                                    </p:fileUpload>
+                                    <p></p>
+                                    #{msgs.SearchStringPrompt}
+                                    <p></p>
+
+                                    <p:inputText id="searchStr"
+                                        value="#{fileGrepBean.searchString}"
+                                                 required="true"
+                                                 label="#{msgs.SearchStringPrompt}" >
+                                        <f:validateLength minimum="3" />
+                                    </p:inputText>
+                                    <p></p>
+                                    <p:selectBooleanCheckbox id="checkWrap"
+                                                             value="#{fileGrepBean.checkWrap}"
+                                                             itemLabel="#{msgs.wordWrapPrompt}"
+                                                             label="#{msgs.wordWrapPrompt}">
+                                        <f:ajax execute="@all" render=":log_entires"/>
+                                    </p:selectBooleanCheckbox>    
+                                    <p></p>
+                                    <h:commandButton id="btnSubmit"
+                                                     action="#{fileGrepBean.grepAction}"
+                                                     value="#{msgs.ProcessBtnPrompt}"
+                                                     class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text ui-c"
+                                                     style="height: 30px;width: 50%">
+                                        <f:ajax execute="@all" render=":log_entires :searchStr :dialogBox :messages" />
+                                    </h:commandButton>
+                                    <p:growl id="messages" showDetail="true" />
+                                </p:menuitem>
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                    <h:form id="heapBeats" prependId="false" enctype="multipart/form-data">
+                        <p:menuitem>
+                            <p:poll interval="3" update="heapBeats" global="false"/>
+                            <p:chart id="votes" type="pie"
+                                     model="#{chartView.livePieModel}"
+                                     style="width:300px;height:250px"/>
+                        </p:menuitem>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:outputStylesheet library="css" name="table-style.css" />
+                    <h:form id="log_entires" prependId="false" enctype="multipart/form-data" >
+                        <p:dataTable value="#{fileGrepBean.applyFilterToLogEntriesList}"
+                                     var="logEntry"
+                                     scrollable="true"
+                                     tableStyle="#{fileGrepBean.checkWrap ? 'width:100%;' : 'width:auto;'}"
+                                     resizableColumns="true"
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,30"
+                                     styleClass="log-table">
+                            <p:column>
+                                <f:facet name="header">
+                                    #{msgs.LogEntiresPrompt} (#{fileGrepBean.applyFilterToLogEntriesList.size()})
+                                </f:facet>
+                                <pre class="#{fileGrepBean.checkWrap ? 'prettyprint_wrapon' : 'prettyprint_wrapoff'}">#{logEntry.logEntryHead}#{logEntry.logEntryData}</pre>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+                <h:form id="dialogBox" prependId="false" enctype="multipart/form-data" >
+                <p:dialog header="" showEffect="explode" hideEffect="bounce" height="100" 
+                          widgetVar="restrictDialog" 
+                          visible="true"
+                          rendered="#{fileGrepBean.showRestrictDialog}">
+                    <h:outputText value="#{msgs.showRestrictDialog}" />
+                </p:dialog>
+                </h:form>
+                
+            </p:layout>
+        </h:body>
+
+    </f:view>
+
+</html>
+

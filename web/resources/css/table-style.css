@@ -1,0 +1,52 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22.04.2016, 11:05:37
+    Author     : chernykh_vv
+*/
+
+.log-table{
+    border-collapse:collapse;
+}
+
+.log-table-header{
+    text-align:left;
+    background:none repeat scroll 0 0 #E5E5E5;
+    /*border-bottom:1px solid #BBBBBB;*/
+    padding:16px;
+}
+
+.log-table-odd-row{
+    text-align:left;
+    background:none repeat scroll 0 0 #FFFFFF;
+    /*border-top:1px solid #BBBBBB;*/
+}
+
+.log-table-even-row{
+    text-align:left;
+    background:none repeat scroll 0 0 #F9F9F9;
+    /*border-top:1px solid #BBBBBB;*/
+}
+.prettyprint_wrapon{
+    font-family: monospace;
+    font-size: small;
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.*/
+    /*word-wrap: break-word;*/
+}
+.prettyprint_wrapoff{
+    font-family: monospace;
+    font-size: small;
+}
+.width_auto{
+    width: auto;
+}
+.width_100{
+    width: 100;
+}
